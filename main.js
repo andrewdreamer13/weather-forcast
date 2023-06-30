@@ -19,7 +19,7 @@ weatherForm.addEventListener('submit', (e) => {
 
 async function getWeatherData() {
 
-  const responseWeatherData = await fetch(`http://api.weatherapi.com/v1/current.json?key=${weatherApiKey}&q=${city}`);
+  const responseWeatherData = await fetch(`https://api.weatherapi.com/v1/current.json?key=${weatherApiKey}&q=${city}`);
   const weatherData = await responseWeatherData.json();
   console.log(weatherData);
   createWeatherCard(weatherData);
