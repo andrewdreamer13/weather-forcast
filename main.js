@@ -126,7 +126,7 @@ async function getUserIp() {
 
 async function getWeatherDataIp() {
  
-  const responseWeatherData = await fetch(`http://api.weatherapi.com/v1/current.json?key=${weatherApiKey}&q=${await getUserIp()}`);
+  const responseWeatherData = await fetch(`https://api.weatherapi.com/v1/current.json?key=${weatherApiKey}&q=${await getUserIp()}`);
   const weatherData = await responseWeatherData.json();
   createWeatherCard(weatherData);
   return weatherData;
