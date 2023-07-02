@@ -4,6 +4,7 @@ const weatherBody = document.querySelector('.weather');
 const weatherForm = document.querySelector('#weather-form');
 const weatherInput = document.querySelector('#weather-input');
 let city;
+let listItems;
 
 // Event submit
 
@@ -51,16 +52,16 @@ function createWeatherCard(weatherData) {
 
 
     const weatherCard = `
-        <ul class="weather__list">
-          <li  class="weather__list-item"><span class="weather__list-title">Country:</span>${weatherData.location.country}</li>
-          <li  class="weather__list-item"><span class="weather__list-title">City:</span>${weatherData.location.name}</li>
-          <li  class="weather__list-item"><span class="weather__list-title">Date:</span>${date}</li>
-          <li  class="weather__list-item"><span class="weather__list-title">Time:</span>${time}</li>
-          <li  class="weather__list-item"><span class="weather__list-title">Temperature:</span>${weatherData.current.temp_c}°C</li>
-          <li  class="weather__list-item"><span class="weather__list-title">Feels like:</span>${weatherData.current.feelslike_c} °C</li>
-          <li  class="weather__list-item"><span class="weather__list-title">Wind:</span>${weatherData.current.wind_kph} km/ph</li>
-          <li  class="weather__list-item"><span class="weather__list-title">Gusts of wind:</span>${weatherData.current.gust_kph} km/ph</li>
-          <li  class="weather__list-item"><span class="weather__list-title">Wind direction:</span>${weatherData.current.wind_dir}</li>
+        <ul class="weather__list" style=" background-image: url(${weatherData.current.condition.icon})">
+          <li  class="weather__list-item"><span class="weather__list-title">Country:</span> <span>${weatherData.location.country}</span> </li>
+          <li  class="weather__list-item"><span class="weather__list-title">City:</span> <span>${weatherData.location.name}</span> </li>
+          <li  class="weather__list-item"><span class="weather__list-title">Date:</span> <span> ${date}</span></li>
+          <li  class="weather__list-item"><span class="weather__list-title">Time:</span>  <span> ${time}</span></li>
+          <li  class="weather__list-item"><span class="weather__list-title">Temperature:</span>  <span>${weatherData.current.temp_c}°C</span> </li>
+          <li  class="weather__list-item"><span class="weather__list-title">Feels like:</span>  <span>${weatherData.current.feelslike_c} °C</span> </li>
+          <li  class="weather__list-item"><span class="weather__list-title">Wind:</span>  <span>${weatherData.current.wind_kph} km/ph</span> </li>
+          <li  class="weather__list-item"><span class="weather__list-title">Gusts of wind:</span> <span>${weatherData.current.gust_kph} km/ph</span> </li>
+          <li  class="weather__list-item"><span class="weather__list-title">Wind direction:</span> <span>${weatherData.current.wind_dir}</span></li>
           <li  class="weather__list-item">
           <span class="weather__list-title"> ${weatherData.current.condition.text}</span>
           <img class="weather__list-img" src="${weatherData.current.condition.icon}">
@@ -68,6 +69,7 @@ function createWeatherCard(weatherData) {
         </ul>
           `;
     weatherBody.insertAdjacentHTML('beforeend', weatherCard);
+    showItems()
 
   }
   weatherInput.value = '';
@@ -95,6 +97,7 @@ function createErrorCard(weatherData) {
     </ul>
     `;
   weatherBody.insertAdjacentHTML('beforeend', errorCard);
+  showItems();
 }
 
 // function  create error card for the empty input
@@ -107,6 +110,7 @@ function createEmptyCard() {
     </ul>
     `;
   weatherBody.insertAdjacentHTML('beforeend', emptyCard);
+  showItems();
 }
 
 
@@ -125,7 +129,7 @@ async function getUserIp() {
 //  get data from server where city was got from user IP
 
 async function getWeatherDataIp() {
- 
+
   const responseWeatherData = await fetch(`https://api.weatherapi.com/v1/current.json?key=${weatherApiKey}&q=${await getUserIp()}`);
   const weatherData = await responseWeatherData.json();
   createWeatherCard(weatherData);
@@ -138,9 +142,36 @@ async function getWeatherDataIp() {
 function createWeatherCardOnLoad() {
 
   window.addEventListener('load', () => {
-    getWeatherDataIp()
+    getWeatherDataIp();
+
   });
 
 }
 createWeatherCardOnLoad();
 
+
+// function animate title
+
+window.addEventListener('load', () => {
+  const titleLetters = document.querySelectorAll('.weather__title span');
+
+  titleLetters.forEach((letter) => {
+    letter.classList.add('untranslate');
+  });
+
+});
+
+// function show list item
+
+function showItems() {
+   listItems = document.querySelectorAll('.weather__list-item');
+
+  listItems.forEach((item) => {
+
+    setTimeout(() => {
+      item.classList.add('visible')
+    }, 600);
+   
+  })
+
+}
